@@ -25,7 +25,7 @@ export default function JoinPool() {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const poolDate = tomorrow.toISOString().split("T")[0];
-
+    
     let { data: pool } = await supabase
       .from("pools")
       .select("*")
