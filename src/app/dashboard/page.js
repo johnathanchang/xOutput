@@ -76,6 +76,9 @@ export default function Dashboard() {
       <button onClick={handleLogout} className="px-6 py-3 bg-red-500 rounded-lg font-bold">
         Log Out
       </button>
+      <a href="/deposit" className="block bg-blue-500 text-center py-4 rounded-lg font-bold text-lg mb-4">
+        Add Funds
+      </a>
     </div>
   );
 }
