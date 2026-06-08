@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 
 export default function Timer() {
   const [user, setUser] = useState(null);
-  const [secondsLeft, setSecondsLeft] = useState(300);
+  const [secondsLeft, setSecondsLeft] = useState(10);
   const [isRunning, setIsRunning] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -118,7 +118,7 @@ export default function Timer() {
       <div className="w-full max-w-md bg-gray-800 rounded-full h-4 mb-8">
         <div
           className={`h-4 rounded-full transition-all duration-1000 ${failed ? "bg-red-500" : "bg-green-500"}`}
-          style={{ width: ((300 - secondsLeft) / 300) * 100 + "%" }}
+          style={{ width: ((10 - secondsLeft) / 10) * 100 + "%" }}
         ></div>
       </div>
 
