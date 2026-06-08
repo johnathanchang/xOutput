@@ -58,9 +58,13 @@ export default function Dashboard() {
         <p className="text-gray-400">Your balance</p>
       </div>
 
-      <a href="/join" className="block bg-green-500 text-center py-4 rounded-lg font-bold text-lg mb-4">
-        Join Tomorrows Pool
+      <a href="/timer" className="block bg-green-500 text-center py-4 rounded-lg font-bold text-lg mb-4">
+         Start Morning Check-in
       </a>
+
+      <a href="/join" className="block bg-gray-800 text-center py-4 rounded-lg font-bold text-lg mb-4">
+         Join Tomorrows Pool
+       </a>
 
       <button onClick={handleLogout} className="px-6 py-3 bg-red-500 rounded-lg font-bold">
         Log Out

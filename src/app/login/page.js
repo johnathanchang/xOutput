@@ -16,7 +16,7 @@ export default function Signup() {
     if (error) {
       setMessage(error.message);
     } else {
-      setMessage("Logged in successfully!");
+      window.location.href = "/join";
     }
   };
 

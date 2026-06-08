@@ -57,7 +57,10 @@ export default function JoinPool() {
       .update({ balance: 50 - stake })
       .eq("id", user.id);
 
-    setMessage("Locked in! Wake up by " + time + " or lose $" + stake);
+     setMessage("Locked in! Redirecting to dashboard...");
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 2000);
   };
 
   return (

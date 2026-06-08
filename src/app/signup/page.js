@@ -16,7 +16,7 @@ export default function Signup() {
     if (error) {
       setMessage(error.message);
     } else {
-      setMessage("Check your email for a confirmation link!");
+      window.location.href = "/login";
     }
   };
 
@@ -48,6 +48,7 @@ export default function Signup() {
       </button>
 
       {message && <p className="mt-4 text-gray-400">{message}</p>}
+      <a href="/login" className="mt-4 text-green-400 underline">Already have an account? Log in</a>
     </div>
   );
 }
