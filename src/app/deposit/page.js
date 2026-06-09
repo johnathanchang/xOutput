@@ -40,7 +40,7 @@ export default function Deposit() {
             key={amount}
             onClick={() => handleDeposit(amount)}
             disabled={loading}
-            className="w-full py-3.5 border border-[var(--input-border)] rounded-xl font-medium text-sm text-white hover:bg-white/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full py-3.5 border border-[#A9A9B0] rounded-xl font-medium text-sm text-white hover:bg-white/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Deposit ${amount}
           </button>

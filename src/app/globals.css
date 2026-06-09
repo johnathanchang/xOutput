@@ -23,14 +23,19 @@
 body {
   background: #000000;
   color: var(--foreground);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-  letter-spacing: -0.025em;
+.frame-group:hover .corner-tl { transform: translate(-7px, -7px); }
+.frame-group:hover .corner-tr { transform: translate(7px, -7px); }
+.frame-group:hover .corner-br { transform: translate(7px, 7px); }
+.frame-group:hover .corner-bl { transform: translate(-7px, 7px); }
+
+@keyframes highlight-button-ripple {
+  0% { width: 0; height: 0; opacity: 0.6; }
+  100% { width: 200px; height: 200px; opacity: 0; }
 }
 
 @keyframes dollarUp {

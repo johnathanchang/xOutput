@@ -28,7 +28,7 @@ export default function Timer() {
 
         graceRef.current = setTimeout(() => {
           setFailed(true);
-          setMessage("You left for too long. You lost your stake.");
+          setMessage("");
           handleFail();
         }, 15000);
 
@@ -110,16 +110,16 @@ export default function Timer() {
 
   return (
     <div className="min-h-screen text-white flex flex-col items-center justify-center p-8">
-      <p className="text-white/40 text-xs uppercase tracking-widest mb-8">Morning Check-in</p>
+      <p className={`text-xs uppercase tracking-widest mb-8 ${failed ? "text-[#FF0000]" : "text-white/40"}`}>Morning Check-in</p>
 
-      <div className={`text-7xl font-bold tracking-tighter mb-10 font-[family-name:var(--font-geist-mono)] ${failed ? "text-red-400" : "text-white"}`}>
+      <div className={`text-7xl font-bold tracking-tighter mb-10 font-[family-name:var(--font-geist-mono)] ${failed ? "text-[#FF0000]" : "text-white"}`}>
         {minutes}:{seconds.toString().padStart(2, "0")}
       </div>
 
-      <div className="w-full max-w-xs h-1 bg-white/[0.06] rounded-full mb-10 overflow-hidden">
+      <div className="w-full max-w-sm h-3 bg-white/[0.08] rounded-full mb-10 overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all duration-1000 ${failed ? "bg-red-400" : "bg-white"}`}
-          style={{ width: progress + "%" }}
+          className={`h-full rounded-full transition-all duration-1000 ease-linear ${failed ? "bg-[#FF0000]" : "bg-white"}`}
+          style={{ width: `${failed ? 100 : isRunning || completed ? progress : 0}%` }}
         />
       </div>
 
@@ -132,10 +132,16 @@ export default function Timer() {
         </button>
       )}
 
-      <p className={`mt-8 text-sm ${failed ? "text-red-400/80" : "text-white/30"}`}>{message}</p>
+      {failed ? (
+        <p className="mt-8 text-sm text-[#FF0000]">
+          Check-in failure! Go to dashboard to see updated balances.
+        </p>
+      ) : (
+        <p className="mt-8 text-sm text-white/30">{message}</p>
+      )}
 
       {(completed || failed) && (
-        <a href="/dashboard" className="mt-4 text-white/40 text-sm hover:text-white/60 transition-colors">
+        <a href="/dashboard" className={`mt-4 text-sm transition-colors ${failed ? "text-[#FF0000] hover:text-[#FF0000]/80" : "text-white/40 hover:text-white/60"}`}>
           Back to Dashboard &rarr;
         </a>
       )}

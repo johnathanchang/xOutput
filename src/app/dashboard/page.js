@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { FrameButton, FrameMarkers } from "@/components/ui/frame-button";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -9,21 +10,25 @@ export default function Dashboard() {
 
   useEffect(() => {
     const loadDashboard = async () => {
-      const { data: authData } = await supabase.auth.getUser();
+      try {
+        const { data: authData } = await supabase.auth.getUser();
 
-      if (authData.user) {
-        setUser(authData.user);
+        if (authData.user) {
+          setUser(authData.user);
 
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("balance")
-          .eq("id", authData.user.id)
-          .single();
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("balance")
+            .eq("id", authData.user.id)
+            .single();
 
-        if (profile) setBalance(profile.balance);
+          if (profile) setBalance(profile.balance);
+        }
+      } catch (e) {
+        console.error("Dashboard load error:", e);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
     loadDashboard();
   }, []);
@@ -68,38 +73,42 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--card)] p-6 mb-6">
+      <div className="frame-group relative overflow-visible border border-[1.5px] border-white/30 bg-[var(--card)] p-6 mb-6 text-white">
         <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Balance</p>
         <p className="text-4xl font-bold tracking-tight font-[family-name:var(--font-geist-mono)]">
           ${balance !== null ? balance.toFixed(2) : "..."}
         </p>
+        <FrameMarkers size={16} offset={6} />
       </div>
 
       <div className="space-y-3">
-        <a
-          href="/timer"
-          className="block w-full py-3.5 bg-white text-black text-center rounded-xl font-medium text-sm hover:bg-white/90 transition-colors"
+        <FrameButton
+          variant="default"
+          className="w-full"
+          onClick={() => window.location.href = "/timer"}
         >
           Start Morning Check-in
-        </a>
+        </FrameButton>
 
-        <a
-          href="/join"
-          className="block w-full py-3.5 border border-[var(--input-border)] text-center rounded-xl font-medium text-sm text-white hover:bg-white/5 transition-colors"
+        <FrameButton
+          variant="outline"
+          className="w-full"
+          onClick={() => window.location.href = "/join"}
         >
           Join Tomorrow&apos;s Pool
-        </a>
+        </FrameButton>
 
-        <a
-          href="/deposit"
-          className="block w-full py-3.5 border border-[var(--input-border)] text-center rounded-xl font-medium text-sm text-white hover:bg-white/5 transition-colors"
+        <FrameButton
+          variant="outline"
+          className="w-full"
+          onClick={() => window.location.href = "/deposit"}
         >
           Add Funds
-        </a>
+        </FrameButton>
 
         <button
           onClick={resolvePool}
-          className="w-full py-3.5 border border-white/[0.06] text-center rounded-xl font-medium text-sm text-white/40 hover:text-white/60 hover:bg-white/5 transition-colors"
+          className="w-full py-3.5 border border-[#A9A9B0] text-center rounded-xl font-medium text-sm text-white/40 hover:text-white/60 hover:bg-white/5 transition-colors"
         >
           Resolve Pools (Test)
         </button>

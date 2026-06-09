@@ -32,14 +32,14 @@ export default function Signup() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="block w-full px-4 py-3 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl text-sm text-white placeholder-white/30 outline-none focus:border-white/25 transition-colors"
+            className="block w-full px-4 py-3 bg-[var(--input-bg)] border border-[#A9A9B0] rounded-xl text-sm text-white placeholder-white/30 outline-none focus:border-white/25 transition-colors"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="block w-full px-4 py-3 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl text-sm text-white placeholder-white/30 outline-none focus:border-white/25 transition-colors"
+            className="block w-full px-4 py-3 bg-[var(--input-bg)] border border-[#A9A9B0] rounded-xl text-sm text-white placeholder-white/30 outline-none focus:border-white/25 transition-colors"
           />
         </div>
 

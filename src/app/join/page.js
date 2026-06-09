@@ -83,7 +83,7 @@ export default function JoinPool() {
               className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all ${
                 stake === amount
                   ? "bg-white text-black"
-                  : "border border-[var(--input-border)] text-white/60 hover:bg-white/5"
+                  : "border border-[#A9A9B0] text-white/60 hover:bg-white/5"
               }`}
             >
               ${amount}
@@ -102,7 +102,7 @@ export default function JoinPool() {
               className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all ${
                 time === t
                   ? "bg-white text-black"
-                  : "border border-[var(--input-border)] text-white/60 hover:bg-white/5"
+                  : "border border-[#A9A9B0] text-white/60 hover:bg-white/5"
               }`}
             >
               {t}
