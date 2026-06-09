@@ -25,26 +25,29 @@ export default function Deposit() {
     window.location.href = url;
   };
 
-  return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <h1 className="text-4xl font-bold mb-2">Add Funds</h1>
-      <p className="text-gray-400 mb-8">Deposit money to your xOutput balance.</p>
+  const amounts = [10, 20, 50];
 
-      <div className="flex flex-col gap-4 max-w-md">
-        <button onClick={() => handleDeposit(10)} disabled={loading} className="py-4 bg-green-500 rounded-lg font-bold text-xl">
-          Deposit $10
-        </button>
-        <button onClick={() => handleDeposit(20)} disabled={loading} className="py-4 bg-green-500 rounded-lg font-bold text-xl">
-          Deposit $20
-        </button>
-        <button onClick={() => handleDeposit(50)} disabled={loading} className="py-4 bg-green-500 rounded-lg font-bold text-xl">
-          Deposit $50
-        </button>
+  return (
+    <div className="min-h-screen text-white p-8 max-w-lg mx-auto w-full">
+      <a href="/dashboard" className="text-white/30 text-sm hover:text-white/50 transition-colors">&larr; Dashboard</a>
+
+      <h1 className="text-3xl font-bold tracking-tight mt-6 mb-1">Add Funds</h1>
+      <p className="text-white/40 text-sm mb-8">Deposit money to your xOutput balance.</p>
+
+      <div className="space-y-3">
+        {amounts.map((amount) => (
+          <button
+            key={amount}
+            onClick={() => handleDeposit(amount)}
+            disabled={loading}
+            className="w-full py-3.5 border border-[var(--input-border)] rounded-xl font-medium text-sm text-white hover:bg-white/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Deposit ${amount}
+          </button>
+        ))}
       </div>
 
-      {loading && <p className="mt-4 text-gray-400">Redirecting to Stripe...</p>}
-
-      <a href="/dashboard" className="mt-6 block text-green-400 underline">Back to Dashboard</a>
+      {loading && <p className="mt-6 text-white/30 text-sm">Redirecting to Stripe...</p>}
     </div>
   );
 }

@@ -28,13 +28,15 @@ export default function Dashboard() {
     loadDashboard();
   }, []);
 
-  if (loading) return <p className="text-white p-8">Loading...</p>;
+  if (loading) return <p className="text-white/40 p-8 text-sm">Loading...</p>;
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-black text-white p-8">
-        <h1 className="text-4xl font-bold mb-4">Not logged in</h1>
-        <a href="/login" className="text-green-400 underline">Go to login</a>
+      <div className="min-h-screen text-white flex items-center justify-center p-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold tracking-tight mb-3">Not logged in</h1>
+          <a href="/login" className="text-white/40 text-sm hover:text-white/60 transition-colors">Go to login &rarr;</a>
+        </div>
       </div>
     );
   }
@@ -52,33 +54,56 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <h1 className="text-4xl font-bold mb-2">xOutput</h1>
-      <p className="text-gray-400 mb-6">Welcome, {user.email}</p>
-
-      <div className="bg-gray-900 p-6 rounded-lg mb-6">
-        <p className="text-3xl font-bold text-green-400">${balance !== null ? balance.toFixed(2) : "..."}</p>
-        <p className="text-gray-400">Your balance</p>
+    <div className="min-h-screen text-white p-8 max-w-lg mx-auto w-full">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">xOutput</h1>
+          <p className="text-white/30 text-sm">{user.email}</p>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="text-white/30 text-sm hover:text-white/60 transition-colors"
+        >
+          Log out
+        </button>
       </div>
 
-      <a href="/timer" className="block bg-green-500 text-center py-4 rounded-lg font-bold text-lg mb-4">
-        Start Morning Check-in
-      </a>
+      <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--card)] p-6 mb-6">
+        <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Balance</p>
+        <p className="text-4xl font-bold tracking-tight font-[family-name:var(--font-geist-mono)]">
+          ${balance !== null ? balance.toFixed(2) : "..."}
+        </p>
+      </div>
 
-      <a href="/join" className="block bg-gray-800 text-center py-4 rounded-lg font-bold text-lg mb-4">
-        Join Tomorrows Pool
-      </a>
+      <div className="space-y-3">
+        <a
+          href="/timer"
+          className="block w-full py-3.5 bg-white text-black text-center rounded-xl font-medium text-sm hover:bg-white/90 transition-colors"
+        >
+          Start Morning Check-in
+        </a>
 
-      <button onClick={resolvePool} className="w-full py-4 bg-yellow-500 text-black rounded-lg font-bold text-lg mb-4">
-        Resolve Pools (Test)
-      </button>
+        <a
+          href="/join"
+          className="block w-full py-3.5 border border-[var(--input-border)] text-center rounded-xl font-medium text-sm text-white hover:bg-white/5 transition-colors"
+        >
+          Join Tomorrow&apos;s Pool
+        </a>
 
-      <button onClick={handleLogout} className="px-6 py-3 bg-red-500 rounded-lg font-bold">
-        Log Out
-      </button>
-      <a href="/deposit" className="block bg-blue-500 text-center py-4 rounded-lg font-bold text-lg mb-4">
-        Add Funds
-      </a>
+        <a
+          href="/deposit"
+          className="block w-full py-3.5 border border-[var(--input-border)] text-center rounded-xl font-medium text-sm text-white hover:bg-white/5 transition-colors"
+        >
+          Add Funds
+        </a>
+
+        <button
+          onClick={resolvePool}
+          className="w-full py-3.5 border border-white/[0.06] text-center rounded-xl font-medium text-sm text-white/40 hover:text-white/60 hover:bg-white/5 transition-colors"
+        >
+          Resolve Pools (Test)
+        </button>
+      </div>
     </div>
   );
 }
