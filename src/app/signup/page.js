@@ -21,34 +21,42 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <h1 className="text-4xl font-bold mb-6">Sign up for xOutput</h1>
+    <div className="min-h-screen text-white flex items-center justify-center p-8">
+      <div className="w-full max-w-sm">
+        <h1 className="text-3xl font-bold tracking-tight mb-1">Create account</h1>
+        <p className="text-white/40 text-sm mb-8">Sign up to start staking.</p>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="block w-full max-w-md p-3 mb-4 bg-gray-800 rounded-lg"
-      />
+        <div className="space-y-3 mb-6">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="block w-full px-4 py-3 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl text-sm text-white placeholder-white/30 outline-none focus:border-white/25 transition-colors"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="block w-full px-4 py-3 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl text-sm text-white placeholder-white/30 outline-none focus:border-white/25 transition-colors"
+          />
+        </div>
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="block w-full max-w-md p-3 mb-4 bg-gray-800 rounded-lg"
-      />
+        <button
+          onClick={handleSignup}
+          className="w-full py-3 bg-white text-black rounded-xl font-medium text-sm hover:bg-white/90 transition-colors"
+        >
+          Sign Up
+        </button>
 
-      <button
-        onClick={handleSignup}
-        className="px-6 py-3 bg-green-500 rounded-lg font-bold"
-      >
-        Sign Up
-      </button>
+        {message && <p className="mt-4 text-red-400/80 text-sm">{message}</p>}
 
-      {message && <p className="mt-4 text-gray-400">{message}</p>}
-      <a href="/login" className="mt-4 text-green-400 underline">Already have an account? Log in</a>
+        <p className="mt-6 text-center text-white/30 text-sm">
+          Already have an account?{" "}
+          <a href="/login" className="text-white/60 hover:text-white transition-colors">Log in</a>
+        </p>
+      </div>
     </div>
   );
 }

@@ -25,7 +25,7 @@ export default function JoinPool() {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const poolDate = tomorrow.toISOString().split("T")[0];
-    
+
     let { data: pool } = await supabase
       .from("pools")
       .select("*")
@@ -57,38 +57,68 @@ export default function JoinPool() {
       .update({ balance: 50 - stake })
       .eq("id", user.id);
 
-     setMessage("Locked in! Redirecting to dashboard...");
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 2000);
+    setMessage("Locked in! Redirecting to dashboard...");
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 2000);
   };
 
+  const stakeOptions = [5, 10, 20];
+  const timeOptions = ["6:00 AM", "7:00 AM", "8:00 AM"];
+
   return (
-    <div className="min-h-screen bg-black text-white p-8">
-      <h1 className="text-4xl font-bold mb-2">Join Tomorrow's Pool</h1>
-      <p className="text-gray-400 mb-6">Pick your stake and deadline.</p>
+    <div className="min-h-screen text-white p-8 max-w-lg mx-auto w-full">
+      <a href="/dashboard" className="text-white/30 text-sm hover:text-white/50 transition-colors">&larr; Dashboard</a>
 
-      <p className="mb-3">Your stake:</p>
-      <div className="flex gap-3 mb-6">
-        <button onClick={() => setStake(5)} className={`px-6 py-3 rounded-lg font-bold ${stake === 5 ? "bg-green-500" : "bg-gray-800"}`}>$5</button>
-        <button onClick={() => setStake(10)} className={`px-6 py-3 rounded-lg font-bold ${stake === 10 ? "bg-green-500" : "bg-gray-800"}`}>$10</button>
-        <button onClick={() => setStake(20)} className={`px-6 py-3 rounded-lg font-bold ${stake === 20 ? "bg-green-500" : "bg-gray-800"}`}>$20</button>
+      <h1 className="text-3xl font-bold tracking-tight mt-6 mb-1">Join Tomorrow&apos;s Pool</h1>
+      <p className="text-white/40 text-sm mb-8">Pick your stake and deadline.</p>
+
+      <div className="mb-8">
+        <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Your stake</p>
+        <div className="flex gap-3">
+          {stakeOptions.map((amount) => (
+            <button
+              key={amount}
+              onClick={() => setStake(amount)}
+              className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all ${
+                stake === amount
+                  ? "bg-white text-black"
+                  : "border border-[var(--input-border)] text-white/60 hover:bg-white/5"
+              }`}
+            >
+              ${amount}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <p className="mb-3">Wake-up deadline:</p>
-      <div className="flex gap-3 mb-6">
-        <button onClick={() => setTime("6:00 AM")} className={`px-6 py-3 rounded-lg font-bold ${time === "6:00 AM" ? "bg-green-500" : "bg-gray-800"}`}>6:00 AM</button>
-        <button onClick={() => setTime("7:00 AM")} className={`px-6 py-3 rounded-lg font-bold ${time === "7:00 AM" ? "bg-green-500" : "bg-gray-800"}`}>7:00 AM</button>
-        <button onClick={() => setTime("8:00 AM")} className={`px-6 py-3 rounded-lg font-bold ${time === "8:00 AM" ? "bg-green-500" : "bg-gray-800"}`}>8:00 AM</button>
+      <div className="mb-8">
+        <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Wake-up deadline</p>
+        <div className="flex gap-3">
+          {timeOptions.map((t) => (
+            <button
+              key={t}
+              onClick={() => setTime(t)}
+              className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all ${
+                time === t
+                  ? "bg-white text-black"
+                  : "border border-[var(--input-border)] text-white/60 hover:bg-white/5"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <button onClick={handleJoin} className="w-full py-4 bg-green-500 rounded-lg font-bold text-lg mb-4">
+      <button
+        onClick={handleJoin}
+        className="w-full py-3.5 bg-white text-black rounded-xl font-medium text-sm hover:bg-white/90 transition-colors"
+      >
         Lock In
       </button>
 
-      {message && <p className="mt-4 text-gray-400">{message}</p>}
-
-      <a href="/dashboard" className="text-green-400 underline">Back to Dashboard</a>
+      {message && <p className="mt-4 text-white/40 text-sm">{message}</p>}
     </div>
   );
 }

@@ -106,33 +106,37 @@ export default function Timer() {
 
   const minutes = Math.floor(secondsLeft / 60);
   const seconds = secondsLeft % 60;
+  const progress = ((300 - secondsLeft) / 300) * 100;
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-8">
-      <h1 className="text-2xl font-bold mb-8">Morning Check-in</h1>
+    <div className="min-h-screen text-white flex flex-col items-center justify-center p-8">
+      <p className="text-white/40 text-xs uppercase tracking-widest mb-8">Morning Check-in</p>
 
-      <div className={`text-8xl font-bold mb-8 ${failed ? "text-red-500" : ""}`}>
+      <div className={`text-7xl font-bold tracking-tighter mb-10 font-[family-name:var(--font-geist-mono)] ${failed ? "text-red-400" : "text-white"}`}>
         {minutes}:{seconds.toString().padStart(2, "0")}
       </div>
 
-      <div className="w-full max-w-md bg-gray-800 rounded-full h-4 mb-8">
+      <div className="w-full max-w-xs h-1 bg-white/[0.06] rounded-full mb-10 overflow-hidden">
         <div
-          className={`h-4 rounded-full transition-all duration-1000 ${failed ? "bg-red-500" : "bg-green-500"}`}
-          style={{ width: ((300 - secondsLeft) / 300) * 100 + "%" }}
-        ></div>
+          className={`h-full rounded-full transition-all duration-1000 ${failed ? "bg-red-400" : "bg-white"}`}
+          style={{ width: progress + "%" }}
+        />
       </div>
 
       {!completed && !isRunning && !failed && (
-        <button onClick={startTimer} className="px-8 py-4 bg-green-500 rounded-lg font-bold text-xl">
+        <button
+          onClick={startTimer}
+          className="px-10 py-3.5 bg-white text-black rounded-xl font-medium text-sm hover:bg-white/90 transition-colors"
+        >
           Start
         </button>
       )}
 
-      <p className={`mt-6 ${failed ? "text-red-400" : "text-gray-400"}`}>{message}</p>
+      <p className={`mt-8 text-sm ${failed ? "text-red-400/80" : "text-white/30"}`}>{message}</p>
 
       {(completed || failed) && (
-        <a href="/dashboard" className="mt-4 text-green-400 underline text-lg">
-          Back to Dashboard
+        <a href="/dashboard" className="mt-4 text-white/40 text-sm hover:text-white/60 transition-colors">
+          Back to Dashboard &rarr;
         </a>
       )}
     </div>
