@@ -1,9 +1,10 @@
 "use client";
+import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useSearchParams } from "next/navigation";
 
-export default function DepositSuccess() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const amount = Number(searchParams.get("amount"));
   const [done, setDone] = useState(false);
@@ -38,5 +39,13 @@ export default function DepositSuccess() {
         Go to Dashboard
       </a>
     </div>
+  );
+}
+
+export default function DepositSuccess() {
+  return (
+    <Suspense fallback={<p className="text-white p-8">Loading...</p>}>
+      <SuccessContent />
+    </Suspense>
   );
 }
