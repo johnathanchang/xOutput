@@ -5,22 +5,22 @@ import React from "react";
 import { motion } from "motion/react";
 
 const CORNERS = [
-  { Component: ChevronUpLeft,    pos: (o) => ({ top: o, left: o }),    hover: { x: -7, y: -7 } },
-  { Component: ChevronUpRight,   pos: (o) => ({ top: o, right: o }),   hover: { x: 7,  y: -7 } },
-  { Component: ChevronDownRight, pos: (o) => ({ bottom: o, right: o }), hover: { x: 7,  y: 7  } },
-  { Component: ChevronDownLeft,  pos: (o) => ({ bottom: o, left: o }), hover: { x: -7, y: 7  } },
+  { Component: ChevronUpLeft,    pos: (o) => ({ top: o, left: o }),    rest: { x: -5, y: -5 }, hover: { x: -10, y: -10 } },
+  { Component: ChevronUpRight,   pos: (o) => ({ top: o, right: o }),   rest: { x: 5,  y: -5 }, hover: { x: 10,  y: -10 } },
+  { Component: ChevronDownRight, pos: (o) => ({ bottom: o, right: o }), rest: { x: 5,  y: 5  }, hover: { x: 10,  y: 10  } },
+  { Component: ChevronDownLeft,  pos: (o) => ({ bottom: o, left: o }), rest: { x: -5, y: 5  }, hover: { x: -10, y: 10  } },
 ];
 
 export function FrameMarkers({ className, size = 20, offset = 7.5 }) {
   const offsetPx = `-${offset}px`;
   return (
     <>
-      {CORNERS.map(({ Component, pos, hover }, i) => (
+      {CORNERS.map(({ Component, pos, rest, hover }, i) => (
         <motion.span
           key={i}
           className={cn("absolute pointer-events-none text-white/50", className)}
           style={{ position: "absolute", width: size, height: size, ...pos(offsetPx) }}
-          variants={{ rest: { x: 0, y: 0 }, hover }}
+          variants={{ rest, hover }}
           transition={{ duration: 0.25, ease: "easeOut" }}
         >
           <Component style={{ width: size, height: size }} />

@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import DollarBackground from "@/components/DollarBackground";
+import { FallingPattern } from "@/components/ui/falling-pattern";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <DollarBackground />
+        <FallingPattern />
         <div className="relative z-10 flex-1 flex flex-col">{children}</div>
       </body>
     </html>

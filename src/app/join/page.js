@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { FrameButton } from "@/components/ui/frame-button";
 
 export default function JoinPool() {
   const [user, setUser] = useState(null);
@@ -75,48 +76,43 @@ export default function JoinPool() {
 
       <div className="mb-8">
         <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Your stake</p>
-        <div className="flex gap-3">
+        <div className="flex gap-8">
           {stakeOptions.map((amount) => (
-            <button
+            <FrameButton
               key={amount}
+              variant="outline"
+              className="flex-1 px-0"
               onClick={() => setStake(amount)}
-              className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all ${
-                stake === amount
-                  ? "bg-white text-black"
-                  : "border border-[#A9A9B0] text-white/60 hover:bg-white/5"
-              }`}
             >
               ${amount}
-            </button>
+            </FrameButton>
           ))}
         </div>
       </div>
 
       <div className="mb-8">
         <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Wake-up deadline</p>
-        <div className="flex gap-3">
+        <div className="flex gap-8">
           {timeOptions.map((t) => (
-            <button
+            <FrameButton
               key={t}
+              variant="outline"
+              className="flex-1 px-0"
               onClick={() => setTime(t)}
-              className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all ${
-                time === t
-                  ? "bg-white text-black"
-                  : "border border-[#A9A9B0] text-white/60 hover:bg-white/5"
-              }`}
             >
               {t}
-            </button>
+            </FrameButton>
           ))}
         </div>
       </div>
 
-      <button
+      <FrameButton
+        variant="outline"
+        className="w-full"
         onClick={handleJoin}
-        className="w-full py-3.5 bg-white text-black rounded-xl font-medium text-sm hover:bg-white/90 transition-colors"
       >
         Lock In
-      </button>
+      </FrameButton>
 
       {message && <p className="mt-4 text-white/40 text-sm">{message}</p>}
     </div>

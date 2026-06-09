@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import { FrameButton } from "@/components/ui/frame-button";
 
 export default function Deposit() {
   const [user, setUser] = useState(null);
@@ -32,18 +33,19 @@ export default function Deposit() {
       <a href="/dashboard" className="text-white/30 text-sm hover:text-white/50 transition-colors">&larr; Dashboard</a>
 
       <h1 className="text-3xl font-bold tracking-tight mt-6 mb-1">Add Funds</h1>
-      <p className="text-white/40 text-sm mb-8">Deposit money to your xOutput balance.</p>
+      <p className="text-white/40 text-sm mb-8 normal-case tracking-normal">Deposit money to your xOutput balance.</p>
 
-      <div className="space-y-3">
+      <div className="space-y-8">
         {amounts.map((amount) => (
-          <button
+          <FrameButton
             key={amount}
+            variant="outline"
+            className="w-full"
             onClick={() => handleDeposit(amount)}
             disabled={loading}
-            className="w-full py-3.5 border border-[#A9A9B0] rounded-xl font-medium text-sm text-white hover:bg-white/5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Deposit ${amount}
-          </button>
+          </FrameButton>
         ))}
       </div>
 

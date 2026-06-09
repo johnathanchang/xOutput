@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabase";
+import { FrameButton } from "@/components/ui/frame-button";
 
 export default function Timer() {
   const [user, setUser] = useState(null);
@@ -124,12 +125,12 @@ export default function Timer() {
       </div>
 
       {!completed && !isRunning && !failed && (
-        <button
+        <FrameButton
+          variant="outline"
           onClick={startTimer}
-          className="px-10 py-3.5 bg-white text-black rounded-xl font-medium text-sm hover:bg-white/90 transition-colors"
         >
           Start
-        </button>
+        </FrameButton>
       )}
 
       {failed ? (

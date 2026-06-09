@@ -10,12 +10,13 @@
   --input-bg: rgba(255, 255, 255, 0.05);
   --input-border: rgba(255, 255, 255, 0.1);
   --muted: rgba(255, 255, 255, 0.4);
+  --primary: rgba(255, 255, 255, 0.15);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-geist-sans);
   --font-display: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -26,12 +27,19 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
 }
 
 .frame-group:hover .corner-tl { transform: translate(-7px, -7px); }
 .frame-group:hover .corner-tr { transform: translate(7px, -7px); }
 .frame-group:hover .corner-br { transform: translate(7px, 7px); }
 .frame-group:hover .corner-bl { transform: translate(-7px, 7px); }
+
+@keyframes fallingRainCol {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
 
 @keyframes highlight-button-ripple {
   0% { width: 0; height: 0; opacity: 0.6; }
