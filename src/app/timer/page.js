@@ -141,11 +141,15 @@ export default function Timer() {
         <p className="mt-8 text-sm text-white/30">{message}</p>
       )}
 
+      <p className="mt-6 text-white/40 text-xs normal-case tracking-normal leading-relaxed max-w-sm text-center">Check in at least 1 hour before your deadline. You have a 5-minute grace period to press &quot;Start&quot; (e.g. 7:00–7:05 AM). Stay on the check-in screen the entire time – if you navigate away for more than 15 seconds at any point, you lose your funds.</p>
+
       {(completed || failed) && (
         <a href="/dashboard" className={`mt-4 text-sm transition-colors ${failed ? "text-[#FF0000] hover:text-[#FF0000]/80" : "text-white/40 hover:text-white/60"}`}>
           Back to Dashboard &rarr;
         </a>
       )}
+
+      <a href="/welcome" className="block mt-12 text-center text-[10px] text-white normal-case tracking-normal hover:text-white/60 transition-colors">How does xOutput work?</a>
     </div>
   );
 }

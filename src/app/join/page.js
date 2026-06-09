@@ -115,6 +115,10 @@ export default function JoinPool() {
       </FrameButton>
 
       {message && <p className="mt-4 text-white/40 text-sm">{message}</p>}
+
+      <p className="mt-6 text-white/40 text-xs normal-case tracking-normal leading-relaxed">Check in at least 1 hour before your deadline. You have a 5-minute grace period to press &quot;Start&quot; (e.g. 7:00–7:05 AM). Stay on the check-in screen the entire time – if you navigate away for more than 15 seconds at any point, you lose your funds.</p>
+
+      <a href="/welcome" className="block mt-12 text-center text-[10px] text-white normal-case tracking-normal hover:text-white/60 transition-colors">How does xOutput work?</a>
     </div>
   );
 }

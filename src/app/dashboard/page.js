@@ -170,6 +170,8 @@ export default function Dashboard() {
           Resolve Pools (Test)
         </button>
       </div>
+
+      <a href="/welcome" className="block mt-12 text-center text-[10px] text-white normal-case tracking-normal hover:text-white/60 transition-colors">How does xOutput work?</a>
     </div>
   );
 }
