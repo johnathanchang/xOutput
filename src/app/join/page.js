@@ -27,6 +27,29 @@ export default function JoinPool() {
     tomorrow.setDate(tomorrow.getDate() + 1);
     const poolDate = tomorrow.toISOString().split("T")[0];
 
+    const { data: existing } = await supabase
+      .from("pool_entries")
+      .select("id, pools!inner(pool_date)")
+      .eq("user_id", user.id)
+      .eq("pools.pool_date", poolDate)
+      .limit(1);
+
+    if (existing && existing.length > 0) {
+      setMessage("You already have a pool for tomorrow.");
+      return;
+    }
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("balance")
+      .eq("id", user.id)
+      .single();
+
+    if (!profile || profile.balance < stake) {
+      setMessage("Insufficient funds.");
+      return;
+    }
+
     let { data: pool } = await supabase
       .from("pools")
       .select("*")
@@ -55,13 +78,18 @@ export default function JoinPool() {
 
     await supabase
       .from("profiles")
-      .update({ balance: 50 - stake })
+      .update({ balance: profile.balance - stake })
       .eq("id", user.id);
 
-    setMessage("Locked in! Redirecting to dashboard...");
+    const { count } = await supabase
+      .from("pool_entries")
+      .select("*", { count: "exact", head: true })
+      .eq("pool_id", pool.id);
+
+    setMessage(`Locked in! ${count} ${count === 1 ? "person" : "people"} in your pool.`);
     setTimeout(() => {
       window.location.href = "/dashboard";
-    }, 2000);
+    }, 2500);
   };
 
   const stakeOptions = [5, 10, 20];
@@ -81,7 +109,7 @@ export default function JoinPool() {
             <FrameButton
               key={amount}
               variant="outline"
-              className="flex-1 px-0"
+              className={`flex-1 px-0 ${stake === amount ? "bg-white/15 border-white/60" : ""}`}
               onClick={() => setStake(amount)}
             >
               ${amount}
@@ -97,7 +125,7 @@ export default function JoinPool() {
             <FrameButton
               key={t}
               variant="outline"
-              className="flex-1 px-0"
+              className={`flex-1 px-0 ${time === t ? "bg-white/15 border-white/60" : ""}`}
               onClick={() => setTime(t)}
             >
               {t}

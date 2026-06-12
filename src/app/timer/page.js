@@ -5,6 +5,7 @@ import { FrameButton } from "@/components/ui/frame-button";
 
 export default function Timer() {
   const [user, setUser] = useState(null);
+  const [entry, setEntry] = useState(null);
   const [secondsLeft, setSecondsLeft] = useState(300);
   const [isRunning, setIsRunning] = useState(false);
   const [completed, setCompleted] = useState(false);
@@ -17,6 +18,22 @@ export default function Timer() {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
       setUser(data.user);
+      if (!data.user) return;
+
+      const today = new Date().toISOString().split("T")[0];
+      const { data: entries } = await supabase
+        .from("pool_entries")
+        .select("id, pools!inner(pool_date, time_slot)")
+        .eq("user_id", data.user.id)
+        .eq("checked_in", false)
+        .eq("pools.pool_date", today)
+        .limit(1);
+
+      if (entries && entries.length > 0) {
+        setEntry(entries[0]);
+      } else {
+        setMessage("No check-in scheduled for today.");
+      }
     };
     getUser();
   }, []);
@@ -43,10 +60,43 @@ export default function Timer() {
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, [isRunning, failed]);
+  }, [isRunning, failed, entry]);
+
+  const parseTimeSlot = (slot) => {
+    const [timePart, meridiem] = slot.split(" ");
+    let [hours, minutes] = timePart.split(":").map(Number);
+    if (meridiem === "PM" && hours !== 12) hours += 12;
+    if (meridiem === "AM" && hours === 12) hours = 0;
+    const d = new Date();
+    d.setHours(hours, minutes, 0, 0);
+    return d;
+  };
 
   const startTimer = () => {
     if (completed || failed) return;
+    if (!entry) {
+      setMessage("No check-in scheduled for today.");
+      return;
+    }
+
+    const deadline = parseTimeSlot(entry.pools.time_slot);
+    const windowStart = new Date(deadline.getTime() - 60 * 60 * 1000);
+    const windowEnd = new Date(deadline.getTime() + 5 * 60 * 1000);
+    const now = new Date();
+
+    if (now < windowStart) {
+      const opensAt = windowStart.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+      setMessage(`Too early. Check-in opens at ${opensAt}.`);
+      return;
+    }
+
+    if (now > windowEnd) {
+      setFailed(true);
+      setMessage("You missed your window.");
+      handleFail();
+      return;
+    }
+
     setIsRunning(true);
     setMessage("Stay on this page...");
     intervalRef.current = setInterval(() => {
@@ -64,45 +114,26 @@ export default function Timer() {
   };
 
   const handleCheckIn = async () => {
-    if (!user) return;
-
-    const { data: entry } = await supabase
-      .from("pool_entries")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("checked_in", false)
-      .limit(1)
-      .single();
-
-    if (entry) {
-      await supabase
-        .from("pool_entries")
-        .update({ checked_in: true, checked_in_at: new Date().toISOString() })
-        .eq("id", entry.id);
-
-      setMessage("You're checked in! You kept your money.");
-    } else {
-      setMessage("No active pool found.");
+    if (!entry) {
+      setMessage("No check-in scheduled for today.");
+      return;
     }
+
+    await supabase
+      .from("pool_entries")
+      .update({ checked_in: true, checked_in_at: new Date().toISOString() })
+      .eq("id", entry.id);
+
+    setMessage("You're checked in! You kept your money.");
   };
 
   const handleFail = async () => {
-    if (!user) return;
+    if (!entry) return;
 
-    const { data: entry } = await supabase
+    await supabase
       .from("pool_entries")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("checked_in", false)
-      .limit(1)
-      .single();
-
-    if (entry) {
-      await supabase
-        .from("pool_entries")
-        .update({ checked_in: false, checked_in_at: new Date().toISOString() })
-        .eq("id", entry.id);
-    }
+      .update({ checked_in: false, checked_in_at: new Date().toISOString() })
+      .eq("id", entry.id);
   };
 
   const minutes = Math.floor(secondsLeft / 60);
@@ -135,7 +166,7 @@ export default function Timer() {
 
       {failed ? (
         <p className="mt-8 text-sm text-[#FF0000]">
-          Check-in failure! Go to dashboard to see updated balances.
+          {message || "Check-in failure! Go to dashboard to see updated balances."}
         </p>
       ) : (
         <p className="mt-8 text-sm text-white/30">{message}</p>

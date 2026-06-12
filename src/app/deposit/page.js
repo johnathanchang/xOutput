@@ -6,6 +6,7 @@ import { FrameButton } from "@/components/ui/frame-button";
 export default function Deposit() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [customAmount, setCustomAmount] = useState("");
 
   useEffect(() => {
     const getUser = async () => {
@@ -47,6 +48,33 @@ export default function Deposit() {
             Deposit ${amount}
           </FrameButton>
         ))}
+
+        <div className="flex gap-3 items-center">
+          <div className="relative flex-1">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 text-sm">$</span>
+            <input
+              type="number"
+              min="1"
+              step="1"
+              placeholder="Amount"
+              value={customAmount}
+              onChange={(e) => setCustomAmount(e.target.value)}
+              className="w-full py-4 pl-8 pr-4 bg-transparent border-[1.5px] border-white/30 text-white text-sm font-medium tracking-[0.2em] uppercase placeholder:text-white/20 placeholder:normal-case placeholder:tracking-normal focus:outline-none focus:border-white/60"
+            />
+          </div>
+          <FrameButton
+            variant="outline"
+            className="whitespace-nowrap"
+            disabled={loading}
+            onClick={() => {
+              const parsed = parseFloat(customAmount);
+              if (!parsed || parsed < 1) return;
+              handleDeposit(parsed);
+            }}
+          >
+            Deposit Custom
+          </FrameButton>
+        </div>
       </div>
 
       {loading && <p className="mt-6 text-white/30 text-sm">Redirecting to Stripe...</p>}

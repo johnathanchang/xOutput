@@ -8,6 +8,7 @@ export default function Dashboard() {
   const [balance, setBalance] = useState(null);
   const [streak, setStreak] = useState(0);
   const [activePool, setActivePool] = useState(null);
+  const [poolCount, setPoolCount] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,29 +29,25 @@ export default function Dashboard() {
 
           const { data: entries } = await supabase
             .from("pool_entries")
-            .select("pool_id, pools(pool_date, time_slot, stake_amount)")
+            .select("pool_id, checked_in, pools(pool_date, time_slot, stake_amount)")
             .eq("user_id", authData.user.id);
 
           if (entries && entries.length > 0) {
-            const dates = [...new Set(entries.map(e => e.pools?.pool_date).filter(Boolean))].sort().reverse();
+            const checkedDates = new Set(
+              entries
+                .filter(e => e.checked_in === true)
+                .map(e => e.pools?.pool_date)
+                .filter(Boolean)
+            );
             let count = 0;
             const today = new Date();
-            const check = new Date(today);
-            check.setDate(check.getDate() + 1);
-            for (const d of dates) {
-              const dateStr = check.toISOString().split("T")[0];
-              if (d === dateStr) {
-                count++;
-                check.setDate(check.getDate() - 1);
-              } else {
-                const todayStr = today.toISOString().split("T")[0];
-                if (count === 0 && d === todayStr) {
-                  count++;
-                  check.setDate(check.getDate() - 1);
-                } else {
-                  break;
-                }
-              }
+            const cursor = new Date(today);
+            if (!checkedDates.has(cursor.toISOString().split("T")[0])) {
+              cursor.setDate(cursor.getDate() - 1);
+            }
+            while (checkedDates.has(cursor.toISOString().split("T")[0])) {
+              count++;
+              cursor.setDate(cursor.getDate() - 1);
             }
             setStreak(count);
 
@@ -63,6 +60,13 @@ export default function Dashboard() {
             );
             if (active?.pools) {
               setActivePool(active.pools);
+
+              const { count } = await supabase
+                .from("pool_entries")
+                .select("*", { count: "exact", head: true })
+                .eq("pool_id", active.pool_id);
+
+              setPoolCount(count);
             }
           }
         }
@@ -130,7 +134,7 @@ export default function Dashboard() {
             </div>
             {activePool && (
               <p className="text-amber-400 text-[9px] normal-case">
-                {activePool.time_slot} pool · ${activePool.stake_amount} at risk
+                {activePool.time_slot} pool · ${activePool.stake_amount} at risk{poolCount !== null ? ` · ${poolCount} in pool` : ""}
               </p>
             )}
           </div>
