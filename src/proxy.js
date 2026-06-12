@@ -25,7 +25,18 @@ export async function proxy(request) {
     }
   );
 
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const publicRoutes = ["/login", "/signup", "/welcome"];
+  const { pathname } = request.nextUrl;
+  const isPublic = publicRoutes.some((r) => pathname.startsWith(r))
+    || pathname.startsWith("/api")
+    || pathname === "/";
+
+  if (!user && !isPublic) {
+    const loginUrl = new URL("/login", request.nextUrl);
+    return NextResponse.redirect(loginUrl);
+  }
 
   return supabaseResponse;
 }

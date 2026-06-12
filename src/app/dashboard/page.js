@@ -81,16 +81,7 @@ export default function Dashboard() {
 
   if (loading) return <p className="text-white/40 p-8 text-sm">Loading...</p>;
 
-  if (!user) {
-    return (
-      <div className="min-h-screen text-white flex items-center justify-center p-8">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight mb-3">Not logged in</h1>
-          <a href="/login" className="text-white/40 text-sm hover:text-white/60 transition-colors">Go to login &rarr;</a>
-        </div>
-      </div>
-    );
-  }
+  if (!user) return <p className="text-white/40 p-8 text-sm">Loading...</p>;
 
   const resolvePool = async () => {
     const res = await fetch("/api/resolve");
