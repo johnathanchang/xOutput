@@ -125,7 +125,7 @@ export default function Dashboard() {
             </div>
             {activePool && (
               <p className="text-amber-400 text-[9px] normal-case">
-                {activePool.time_slot} pool · ${activePool.stake_amount} at risk{poolCount !== null ? ` · ${poolCount} in pool` : ""}
+                {activePool.time_slot} pool · ${activePool.stake_amount} at risk{poolCount !== null ? ` · ${poolCount}/15 in pool` : ""}
               </p>
             )}
           </div>

@@ -67,6 +67,16 @@ export default function JoinPool() {
       pool = newPool;
     }
 
+    const { count: currentCount } = await supabase
+      .from("pool_entries")
+      .select("*", { count: "exact", head: true })
+      .eq("pool_id", pool.id);
+
+    if (currentCount >= 15) {
+      setMessage("This pool is full (15/15). Try a different time slot.");
+      return;
+    }
+
     const { error } = await supabase
       .from("pool_entries")
       .insert({ pool_id: pool.id, user_id: user.id });
@@ -86,7 +96,7 @@ export default function JoinPool() {
       .select("*", { count: "exact", head: true })
       .eq("pool_id", pool.id);
 
-    setMessage(`Locked in! ${count} ${count === 1 ? "person" : "people"} in your pool.`);
+    setMessage(`Locked in! ${count}/15 in your pool.`);
     setTimeout(() => {
       window.location.href = "/dashboard";
     }, 2500);
