@@ -111,25 +111,25 @@ export default function Dashboard() {
       </div>
 
       <div className="frame-group relative overflow-visible border border-[1.5px] border-white/30 bg-[var(--card)] p-6 mb-6 text-white">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between mb-3">
           <div>
             <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Balance</p>
             <p className="text-4xl font-bold tracking-tight font-[family-name:var(--font-geist-mono)]">
               ${balance !== null ? balance.toFixed(2) : "..."}
             </p>
           </div>
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-1.5 border border-white/20 rounded-full px-2 py-0.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-              <span className="text-[10px] font-medium">{streak}-DAY STREAK</span>
-            </div>
-            {activePool && (
-              <p className="text-amber-400 text-[9px] normal-case">
-                {activePool.time_slot} pool · ${activePool.stake_amount} at risk{poolCount !== null ? ` · ${poolCount}/15 in pool` : ""}
-              </p>
-            )}
+          <div className="flex items-center gap-1.5 border border-white/20 rounded-full px-2 py-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+            <span className="text-[10px] font-medium">{streak}-DAY STREAK</span>
           </div>
         </div>
+        {activePool && (
+          <div className="border-t border-white/10 pt-3">
+            <p className="text-amber-400 text-[10px] normal-case">
+              {activePool.time_slot} pool · ${activePool.stake_amount} at risk{poolCount !== null ? ` · ${poolCount}/15 in pool` : ""}
+            </p>
+          </div>
+        )}
         <FrameMarkers size={16} offset={6} />
       </div>
 
